@@ -5,6 +5,7 @@ import java.util.function.Function;
 import java.util.function.IntUnaryOperator;
 import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 class MultifunctionalMapper {
     private static final String TAB = "    ";
@@ -13,7 +14,14 @@ class MultifunctionalMapper {
      * The function accepts a list of mappers and returns an operator that accepts a list of integers
      * and sequentially applies each mapper to each value (perform a transformation)
      */
-    public static final Function<List<IntUnaryOperator>, UnaryOperator<List<Integer>>> MULTIFUNCTIONAL_MAPPER =
+    public static final Function<List<IntUnaryOperator>,
+            UnaryOperator<List<Integer>>> MULTIFUNCTIONAL_MAPPER =
+            operators -> list -> list.stream().mapToInt(number -> {
+                for (IntUnaryOperator operator : operators) {
+                    number = operator.applyAsInt(number);
+                }
+                return number;
+            }).boxed().collect(Collectors.toList());
 
     /**
      * EXAMPLE: the operator transforms each number to the same number (perform the identity transformation)
@@ -30,6 +38,7 @@ class MultifunctionalMapper {
      * The operator returns transformed integer list.
      */
     public static final UnaryOperator<List<Integer>> MULT_TWO_AND_THEN_ADD_ONE_TRANSFORMATION =
+            MULTIFUNCTIONAL_MAPPER.apply(Arrays.asList(x -> x * 2, x -> x + 1));
 
     /**
      * The operator accepts an integer list. 
@@ -38,6 +47,13 @@ class MultifunctionalMapper {
      * The operator returns transformed integer list.
      */
     public static final UnaryOperator<List<Integer>> SQUARE_AND_THEN_GET_NEXT_EVEN_NUMBER_TRANSFORMATION =
+            MULTIFUNCTIONAL_MAPPER.apply(Arrays.asList(x -> x * x, x -> {
+                if (x % 2 == 0) {
+                    return x + 2;
+                } else {
+                    return x + 1;
+                }
+            }));
 
     // Don't change the code below
     public static void main(String[] args) {

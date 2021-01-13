@@ -1,3 +1,4 @@
+import java.util.Locale;
 import java.util.Scanner;
 import java.util.function.Function;
 
@@ -5,7 +6,9 @@ class CurryConcat {
 
     public static String calc(String str1, String str2, String str3, String str4) {
 
-        Function<String, Function<String, Function<String, Function<String, String>>>> stringFun = // write your code here
+        Function<String, Function<String,
+                Function<String, Function<String, String>>>> stringFun = a -> b -> c -> d ->
+                a.toLowerCase() + c.toUpperCase() + b.toLowerCase() + d.toUpperCase();
 
         return stringFun.apply(str1).apply(str2).apply(str3).apply(str4);
     }

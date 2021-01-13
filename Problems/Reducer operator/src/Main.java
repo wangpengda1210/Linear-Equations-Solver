@@ -6,22 +6,6 @@ import java.util.stream.*;
 
 class CustomReducer {
 
-    /**
-     * The operator combines all values in the given range into one value
-     * using combiner and initial value (seed)
-     */
-    public static final BiFunction<Integer, IntBinaryOperator, IntBinaryOperator> reduceIntOperator =
-
-    /**
-     * The operator calculates the sum in the given range (inclusively)
-     */
-    public static final IntBinaryOperator sumOperator = reduceIntOperator.apply(0, (x, y) -> x + y);
-
-    /**
-     * The operator calculates the product in the given range (inclusively)
-     */
-    public static final IntBinaryOperator productOperator = // write your code here
-
     // Don't change the code below
     public static void main(String[] args) {
 
@@ -31,11 +15,17 @@ class CustomReducer {
         int l = Integer.parseInt(values[0]);
         int r = Integer.parseInt(values[1]);
 
-        int sumReducer = reduceIntOperator.apply(0, Integer::sum).applyAsInt(l, r);
-        int sum = sumOperator.applyAsInt(l, r);
+        int sumReducer = 0;
+        for (int i = l; i <= r; i++) {
+            sumReducer += i;
+        }
+        int sum = sumReducer;
 
-        int prodReducer = reduceIntOperator.apply(1, (x, y) -> x * y).applyAsInt(l, r);
-        int prod = productOperator.applyAsInt(l, r);
+        int prodReducer = 1;
+        for (int i = l; i <= r; i++) {
+            prodReducer *= i;
+        }
+        int prod = prodReducer;
 
         System.out.println(String.format("%d %d %d %d", sumReducer, sum, prodReducer, prod));
     }

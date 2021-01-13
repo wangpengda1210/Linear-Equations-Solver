@@ -6,3 +6,9 @@ content:
 - Account
 - Time as a string
 - Users as strings
+- Curried function
+- String concatenation
+- Reducer operator
+- Multifunctional mapper
+- Cyclically shifting elements
+- Complex numbers
